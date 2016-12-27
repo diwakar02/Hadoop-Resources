@@ -1,0 +1,19 @@
+Step 1:
+  To start with, fundamentals have to be clear. The below two papers provide deep insights into working of MapReduce and Hadoop
+      https://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf
+      http://pages.cs.wisc.edu/~akella/CS838/F15/838-CloudPapers/hdfs.pdf
+Step 2: 
+  Learn the basics of hadoop by working on it and applying the knowledge in practical world
+  Go to youtube and find any good hadoop tutorial channel (Simplilearn, udacity, Hortonworks etc). Here is one, I used a lot and advise
+  for newbies - Big Data and Hadoop Tutorials by Devlish.
+ 
+Step 3:
+  Make small projects in independ hadoop components (pseudo-node clusters are OK) and then try to integrate them for eg: 
+  Sample Project:
+  XYZ is a big taxi sharing application having lots of data in RDBMS
+  Move the RDBMS data to HDFS 
+  Analyse the data and categorize as Structured, Semi-Structured or unstructured
+  Use Pig and Hive to get insights from this data
+  Use data pipelines
+  Make this available to be used at end party visualization software ( for trends analysis etc)
+
