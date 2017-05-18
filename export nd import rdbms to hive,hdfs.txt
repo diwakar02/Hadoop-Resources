@@ -1,0 +1,142 @@
+
+
+    Sqoop :
+
+Importing
+1.mysql  to    HDFS
+2.Mysql  to    HIVE
+
+Exporting
+1.HDFS  to Mysql
+2. Hive   to Mysql
+
+
+         1.Importing data from Mysql to HDFS:-
+ _____________________________________________________________________________
+
+$ sqoop import --connect  jdbc:<rdbms>://<host name( ip)>/<database name>
+     
+   --username <username>  --password <pwd> --table <tablename>  -m 1
+
+   --target-dir <hdfs directory Name>
+
+
+  jdbc:<rdbms>://<host name( ip)>/<database name> is called database url.
+ 
+
+jdbc ---> drive name
+
+rdbms---> database name like mysql, oracle,sqlser, sysbase..
+
+hostname --->  i)localhost
+               ii) 190.23.34.56---> if the dbserver is remote.
+
+               iii) delhiser ---> dsn name of the data base server.
+
+               iv) delhiser:7898 ---> dsn name with port number.
+                                     where port number indicates , seperate
+                                    database instance
+
+database name--->   specify the name of the database, in which the table is available.
+
+--username --> specify, Database user name.
+
+--password ---> specify, password text of the  database user.
+
+--table ---> specify table name. 
+
+--target-dir --->  give the hdfs directory.( it should be new).
+
+-m 1   ---->  to process sequental import.
+
+
+   if this option  is not specified, random read will happen.
+   so, sqoop read a record, and the record will be written in a seperate hdfs file. 
+  if table has 10 records, 10 seperate files will be created.
+   it causes for unnecassary space waste. bcoz, hadoop block size is huge(64mb).
+
+ if this option is specified,
+
+      sqoop will buffer, all table records, and dumps the buffer into 
+single file of hdfs.(sequential process).
+
+if you dont use -m 1, random read will happen, to support random read, the should have a primary key.
+
+
+if -m 1, is specified, it does not matter, whether there is primary key or not , bcoz, processing style is sequential.
+
+____________________________________________________________________________
+example
+
+___________-/
+
+
+$ sqoop  import --connect jdbc:mysql://localhost/mydb --username root 
+    --table emp  -m 1 --target-dir   <HDFS_New_dirname>
+
+
+____________________________________________________________________________________________________________________
+********************************************************************************************************************
+____________________________________________________________________________________________________________________
+
+
+      2.importing data from rdbms to hive table.
+_______________________________________________________________________________
+
+
+$ sqoop  import --connect jdbc:mysql://localhost/mydb --username user1
+   --table emp -m 1 -hive-import
+
+
+-hive-import ---> to direct the data into hive table.
+
+*note:- 
+ 
+  table name of RDBMS and table name of hive , should be same.
+
+
+____________________________________________________________________________
+****************************************************************************
+
+
+
+
+          3.exporting data from hdfs file to rdbms table :
+______________________________________________________________________
+
+$ sqoop export --connect jdbc:mysql://localhost/mydb --username user1
+   --password p123 --table emp --export-dir  MyHdfs/mydata.txt
+  --input-fields-terminated-by ','
+
+
+
+--export-dir --> to specify source hdfs file path.
+
+--input-fields-terminated-by ---> to specify delimiter .
+
+___________________________________________________________________________
+***************************************************************************
+
+
+
+         
+          4.exporting data from hive table to rdbms table:
+
+___________________________________________________________________________
+
+
+$ sqoop export --connect jdbc:mysql://localhost/mydb --username user1
+   --password p123 --table emp --export-dir /user/hive/warehouse/Emp/part-m-00000
+  --input-fields-terminated-by '\001'
+
+
+
+from the above example,
+ /user/training/warehouse/Emp/part-m-00000 path of the hive internal table.
+
+'\001' ---> uni code for black daimond.
+
+
+
+
+ 
